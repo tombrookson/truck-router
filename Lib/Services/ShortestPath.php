@@ -4,41 +4,31 @@ use TruckRouter\DataModels\Link;
 
 class ShortestPath
 {
-	protected $from;
-	protected $to;
-	public $jumps = 1;
+	public static function bfs_path($start, $end) {
+		$queue = new \SplQueue();
 
-	public function __construct($from, $to)
-	{
-		$this->from = $from;
-		$this->to = $to;
+		$queue->enqueue([$start]);
 
+		$visited = [$start];
+		while ($queue->count() > 0) {
+			$path = $queue->dequeue();
 
-		$this->jumps++;
+			$node = $path[sizeof($path) - 1];
 
-		$links = Link::findByFrom($from);
-
-		foreach($links as $link){
-			if($link['to_id'] == $this->to){
-				break;
-			}else{
-				$this->increaseSearchDepth($link['to_id']);
+			if ($node === $end) {
+				return $path;
 			}
+			foreach (Link::findByFrom($node) as $link) {
+				$neighbour = $link['to_id'];
+				if (!in_array($neighbour, $visited)) {
+					$visited[] = $neighbour;
+
+					$new_path = $path;
+					$new_path[] = $neighbour;
+					$queue->enqueue($new_path);
+				}
+			};
 		}
-	}
-
-	public function increaseSearchDepth($from)
-	{
-		$this->jumps++;
-
-		$links = Link::findByFrom($from);
-
-		foreach($links as $link){
-			if($link['to_id'] == $this->to){
-				break;
-			}else{
-				$this->increaseSearchDepth($link['to_id']);
-			}
-		}
+		return false;
 	}
 }
