@@ -1,8 +1,7 @@
 {
     "name": "tombrookson/truck-router",
     "require": {
-        "catfan/medoo": "^1.5",
-        "clue/graph": "^0.9.0"
+        "catfan/medoo": "^1.5"
     },
     "autoload": {
         "psr-4": {"TruckRouter\\": "Lib/"}
