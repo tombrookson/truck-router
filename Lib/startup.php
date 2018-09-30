@@ -5,6 +5,6 @@
 	require $_SERVER["DOCUMENT_ROOT"] . "/Lib/functions.php";
 require $_SERVER["DOCUMENT_ROOT"] . "/vendor/autoload.php";
 
-//\TruckRouter\Services\DB::createTables();
+\TruckRouter\Services\DB::createTables();
 
 session_start();
